@@ -9,7 +9,7 @@ import BeansData from '../data/BeansData';
 
 export const useStore = create(
   persist(
-    (set, _get) => ({
+    (set, get) => ({
       CoffeeList: CoffeeData,
       BeanList: BeansData,
       CartPrice: 0,
@@ -111,16 +111,24 @@ export const useStore = create(
                 }
               }
             } else if (type == 'Bean') {
-                for (let i = 0; i < state.BeanList.length; i++) {
-                  if (state.BeanList[i].id == id) {
-                    if (state.BeanList[i].favourite == true) {
-                      state.BeanList[i].favourite = false;
-                      state.FavoritesList.unshift(state.BeanList[i]);
-                    }
-                    break;
+              for (let i = 0; i < state.BeanList.length; i++) {
+                if (state.BeanList[i].id == id) {
+                  if (state.BeanList[i].favourite == true) {
+                    state.BeanList[i].favourite = false;
+                    state.FavoritesList.unshift(state.BeanList[i]);
                   }
+                  break;
                 }
               }
+            }
+            let spliceIndex = -1;
+            for (let i = 0; i < state.FavoritesList.length; i++) {
+              if (state.FavoritesList[i].id == id) {
+                spliceIndex = i;
+                break;
+              }
+            }
+            state.FavoritesList.splice(spliceIndex, 1);
           }),
         ),
     }),
