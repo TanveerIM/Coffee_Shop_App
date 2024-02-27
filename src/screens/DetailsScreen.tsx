@@ -1,7 +1,7 @@
 import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {useStore} from '../store/store';
-import { COLORS } from '../theme/theme';
+import {COLORS} from '../theme/theme';
 import ImageBackgroundInfo from '../components/ImageBackgroundInfo';
 
 const DetailsScreen = ({navigation, route}: any) => {
@@ -9,26 +9,38 @@ const DetailsScreen = ({navigation, route}: any) => {
     route.params.type == 'Coffee' ? state.CoffeeList : state.BeanList,
   )[route.params.index];
 
+  const BackHandler = () => {
+    navigation.pop();
+  };
+
+  const addToFavoriteList = useStore((state:any) => state.addToFavoriteList);
+  const deleteFromFavoriteList = useStore((state:any) => state.deleteFromFavoriteList);
+
+  const ToggleFavourite = (favourite: boolean, type: string, id: string) => {
+    favourite ? deleteFromFavoriteList(type, id) : addToFavoriteList(type, id)
+  };
+
   return (
     <View style={styles.screenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
-      <ScrollView 
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.scrollViewFlex}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollViewFlex}>
         <ImageBackgroundInfo
-         EnableBackHandler={true}
-         imagelink_portrait={ItemOfIndex.imagelink_portrait}
-         type={ItemOfIndex.type}
-         id={ItemOfIndex.id}
-         favourite={ItemOfIndex.favourite}
-         name={ItemOfIndex.name}
-         special_ingredient={ItemOfIndex.special_ingredient}
-         ingredients={ItemOfIndex.ingredients}
-         average_rating={ItemOfIndex.average_rating}
-         rating_count={ItemOfIndex.rating_count}
-         roasted={ItemOfIndex.roasted}
-         BackHandler={() => {}}
-         ToggleFavourite={() => {}} />
+          EnableBackHandler={true}
+          imagelink_portrait={ItemOfIndex.imagelink_portrait}
+          type={ItemOfIndex.type}
+          id={ItemOfIndex.id}
+          favourite={ItemOfIndex.favourite}
+          name={ItemOfIndex.name}
+          special_ingredient={ItemOfIndex.special_ingredient}
+          ingredients={ItemOfIndex.ingredients}
+          average_rating={ItemOfIndex.average_rating}
+          rating_count={ItemOfIndex.rating_count}
+          roasted={ItemOfIndex.roasted}
+          BackHandler={BackHandler}
+          ToggleFavourite={ToggleFavourite}
+        />
       </ScrollView>
     </View>
   );
@@ -43,5 +55,5 @@ const styles = StyleSheet.create({
   },
   scrollViewFlex: {
     flexGrow: 1,
-  }
+  },
 });

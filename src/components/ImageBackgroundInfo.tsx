@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import GradientBGIcon from './GradientBGIcon';
-import {COLORS, FONTSIZE} from '../theme/theme';
+import {COLORS, FONTSIZE, SPACING} from '../theme/theme';
 
 interface ImageBackgroundInfoProps {
   EnableBackHandler: boolean;
@@ -48,14 +48,20 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
         style={styles.ItemBackgroundImage}>
         {EnableBackHandler ? (
           <View style={styles.ImageHeaderBarContainerWithBack}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                BackHandler();
+              }}>
               <GradientBGIcon
                 name="left"
                 color={COLORS.primaryLightGreyHex}
                 size={FONTSIZE.size_16}
               />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                ToggleFavourite(favourite, type, id);
+              }}>
               <GradientBGIcon
                 name="like"
                 color={
@@ -66,7 +72,19 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
             </TouchableOpacity>
           </View>
         ) : (
-          <></>
+          <View style={styles.ImageHeaderBarContainerWithoutBack}>
+            <TouchableOpacity onPress={() => {
+              ToggleFavourite(favourite, type, id);
+            }}>
+              <GradientBGIcon
+                name="like"
+                color={
+                  favourite ? COLORS.primaryRedHex : COLORS.primaryLightGreyHex
+                }
+                size={FONTSIZE.size_16}
+              />
+            </TouchableOpacity>
+          </View>
         )}
       </ImageBackground>
     </View>
@@ -82,6 +100,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   ImageHeaderBarContainerWithBack: {
-    
-  }
+    padding: SPACING.space_30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  ImageHeaderBarContainerWithoutBack: {
+    padding: SPACING.space_30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
 });
