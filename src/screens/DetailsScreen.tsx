@@ -36,7 +36,7 @@ const DetailsScreen = ({navigation, route}: any) => {
           special_ingredient={ItemOfIndex.special_ingredient}
           ingredients={ItemOfIndex.ingredients}
           average_rating={ItemOfIndex.average_rating}
-          rating_count={ItemOfIndex.rating_count}
+          rating_count={ItemOfIndex.ratings_count}
           roasted={ItemOfIndex.roasted}
           BackHandler={BackHandler}
           ToggleFavourite={ToggleFavourite}
