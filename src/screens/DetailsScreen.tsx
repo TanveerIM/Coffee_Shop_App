@@ -1,23 +1,70 @@
-import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 import {useStore} from '../store/store';
-import {COLORS} from '../theme/theme';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+  SPACING,
+} from '../theme/theme';
 import ImageBackgroundInfo from '../components/ImageBackgroundInfo';
+import PaymentFooter from '../components/PaymentFooter';
 
 const DetailsScreen = ({navigation, route}: any) => {
   const ItemOfIndex = useStore((state: any) =>
     route.params.type == 'Coffee' ? state.CoffeeList : state.BeanList,
   )[route.params.index];
 
+  const [price, setPrice] = useState(ItemOfIndex.prices[0]);
+  const [fullDesc, setFullDesc] = useState(false);
+
   const BackHandler = () => {
     navigation.pop();
   };
 
-  const addToFavoriteList = useStore((state:any) => state.addToFavoriteList);
-  const deleteFromFavoriteList = useStore((state:any) => state.deleteFromFavoriteList);
+  const addToFavoriteList = useStore((state: any) => state.addToFavoriteList);
+  const deleteFromFavoriteList = useStore(
+    (state: any) => state.deleteFromFavoriteList,
+  );
+
+  const addToCart = useStore((state: any) => state.addToCart);
+  const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
 
   const ToggleFavourite = (favourite: boolean, type: string, id: string) => {
-    favourite ? deleteFromFavoriteList(type, id) : addToFavoriteList(type, id)
+    favourite ? deleteFromFavoriteList(type, id) : addToFavoriteList(type, id);
+  };
+
+  const addToCartHandler = ({
+    id,
+    index,
+    name,
+    roasted,
+    imageLink_square,
+    special_ingredient,
+    type,
+    prices,
+  }: any) => {
+    addToCart({
+      id,
+      index,
+      name,
+      roasted,
+      imageLink_square,
+      special_ingredient,
+      type,
+      prices: [{...price, quantity: 1}],
+    });
+    calculateCartPrice();
+    navigation.navigate('Cart');
   };
 
   return (
@@ -41,6 +88,81 @@ const DetailsScreen = ({navigation, route}: any) => {
           BackHandler={BackHandler}
           ToggleFavourite={ToggleFavourite}
         />
+
+        <View style={styles.FooterInfoArea}>
+          <Text style={styles.InfoTitle}>Description</Text>
+          {fullDesc ? (
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setFullDesc(prev => !prev);
+              }}>
+              <Text style={styles.Descriptiontext}>
+                {ItemOfIndex.description}
+              </Text>
+            </TouchableWithoutFeedback>
+          ) : (
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setFullDesc(prev => !prev);
+              }}>
+              <Text numberOfLines={3} style={styles.Descriptiontext}>
+                {ItemOfIndex.description}
+              </Text>
+            </TouchableWithoutFeedback>
+          )}
+          <Text style={styles.InfoTitle}>Size</Text>
+          <View style={styles.SizeOuterContainer}>
+            {ItemOfIndex.prices.map((data: any) => (
+              <TouchableOpacity
+                key={data.size}
+                onPress={() => {
+                  setPrice(data);
+                }}
+                style={[
+                  styles.SizeBox,
+                  {
+                    borderColor:
+                      data.size == price.size
+                        ? COLORS.primaryOrangeHex
+                        : COLORS.primaryDarkGreyHex,
+                  },
+                ]}>
+                <Text
+                  style={[
+                    styles.SizeText,
+                    {
+                      fontSize:
+                        ItemOfIndex.type == 'bean'
+                          ? FONTSIZE.size_14
+                          : FONTSIZE.size_16,
+                      color:
+                        data.size == price.size
+                          ? COLORS.primaryOrangeHex
+                          : COLORS.secondaryLightGreyHex,
+                    },
+                  ]}>
+                  {data.size}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+        <PaymentFooter
+          price={price}
+          buttonTitle="Add to Cart"
+          buttonPressHandler={() => {
+            addToCartHandler({
+              id: ItemOfIndex.id,
+              index: ItemOfIndex.index,
+              name: ItemOfIndex.name,
+              roasted: ItemOfIndex.roasted,
+              imageLink_square: ItemOfIndex.imagelink_square,
+              speical_ingredient: ItemOfIndex.special_ingredient,
+              type: ItemOfIndex.type,
+              price: price,
+            });
+          }}
+        />
       </ScrollView>
     </View>
   );
@@ -55,5 +177,40 @@ const styles = StyleSheet.create({
   },
   scrollViewFlex: {
     flexGrow: 1,
+    justifyContent: 'space-between',
+  },
+  FooterInfoArea: {
+    padding: SPACING.space_20,
+  },
+  InfoTitle: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    fontSize: FONTSIZE.size_16,
+    color: COLORS.primaryWhiteHex,
+    marginBottom: SPACING.space_10,
+  },
+  Descriptiontext: {
+    letterSpacing: 0.5,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryWhiteHex,
+    marginBottom: SPACING.space_30,
+  },
+  SizeOuterContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: SPACING.space_20,
+  },
+  SizeBox: {
+    flex: 1,
+    backgroundColor: COLORS.primaryDarkGreyHex,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: SPACING.space_24 * 2,
+    borderRadius: BORDERRADIUS.radius_10,
+    borderWidth: 2,
+  },
+  SizeText: {
+    fontFamily: FONTFAMILY.poppins_medium,
   },
 });

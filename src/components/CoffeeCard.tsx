@@ -9,7 +9,13 @@ import {
 } from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+  SPACING,
+} from '../theme/theme';
 import CustomIcon from './CustomIcon';
 import BGIcon from './BGIcon';
 
@@ -19,7 +25,7 @@ interface CoffeeCardProps {
   id: string;
   index: number;
   type: string;
-  rosted: string;
+  roasted: string;
   imagelink_square: ImageProps;
   name: string;
   special_ingredient: string;
@@ -32,7 +38,7 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
   id,
   index,
   type,
-  rosted,
+  roasted,
   imagelink_square,
   name,
   special_ingredient,
@@ -65,7 +71,10 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
         <Text style={styles.cardPriceCurrency}>
           $ <Text style={styles.cardPrice}>{price.price}</Text>
         </Text>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            buttonPressHandler({id,index,type,roasted,imagelink_square,name, special_ingredient,prices:[{...price, quantity:1}]});
+          }}>
           <BGIcon
             color={COLORS.primaryWhiteHex}
             name={'add'}
