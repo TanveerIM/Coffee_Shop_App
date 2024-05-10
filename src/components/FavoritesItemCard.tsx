@@ -1,4 +1,4 @@
-import {ImageProps, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, ImageProps} from 'react-native';
 import React from 'react';
 import ImageBackgroundInfo from './ImageBackgroundInfo';
 import LinearGradient from 'react-native-linear-gradient';
@@ -51,7 +51,7 @@ const FavoritesItemCard: React.FC<FavoritesItemCardProps> = ({
         special_ingredient={special_ingredient}
         ingredients={ingredients}
         average_rating={average_rating}
-        rating_count={ratings_count}
+        ratings_count={ratings_count}
         roasted={roasted}
         ToggleFavourite={ToggleFavouriteItem}
       />
@@ -66,8 +66,6 @@ const FavoritesItemCard: React.FC<FavoritesItemCardProps> = ({
     </View>
   );
 };
-
-export default FavoritesItemCard;
 
 const styles = StyleSheet.create({
   CardContainer: {
@@ -89,3 +87,5 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhiteHex,
   },
 });
+
+export default FavoritesItemCard;

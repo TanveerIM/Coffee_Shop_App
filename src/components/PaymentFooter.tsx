@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {
   BORDERRADIUS,
@@ -41,8 +41,6 @@ const PaymentFooter: React.FC<PaymentFooterProps> = ({
   );
 };
 
-export default PaymentFooter;
-
 const styles = StyleSheet.create({
   PriceFooter: {
     flexDirection: 'row',
@@ -82,3 +80,5 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhiteHex,
   },
 });
+
+export default PaymentFooter;

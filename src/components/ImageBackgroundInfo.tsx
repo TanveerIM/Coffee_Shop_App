@@ -1,12 +1,12 @@
+import React from 'react';
 import {
-  ImageBackground,
-  ImageProps,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
+  ImageProps,
+  TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
-import React from 'react';
 import GradientBGIcon from './GradientBGIcon';
 import {
   BORDERRADIUS,
@@ -27,7 +27,7 @@ interface ImageBackgroundInfoProps {
   special_ingredient: string;
   ingredients: string;
   average_rating: number;
-  rating_count: string;
+  ratings_count: string;
   roasted: string;
   BackHandler?: any;
   ToggleFavourite: any;
@@ -43,7 +43,7 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
   special_ingredient,
   ingredients,
   average_rating,
-  rating_count,
+  ratings_count,
   roasted,
   BackHandler,
   ToggleFavourite,
@@ -137,12 +137,12 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
             <View style={styles.InfoContainerRow}>
               <View style={styles.RatingContainer}>
                 <CustomIcon
-                  name="star"
+                  name={'star'}
                   color={COLORS.primaryOrangeHex}
                   size={FONTSIZE.size_20}
                 />
                 <Text style={styles.RatingText}>{average_rating}</Text>
-                <Text style={styles.RatingCountText}>({rating_count})</Text>
+                <Text style={styles.RatingCountText}>({ratings_count})</Text>
               </View>
               <View style={styles.RoastedContainer}>
                 <Text style={styles.RoastedText}>{roasted}</Text>
@@ -154,8 +154,6 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
     </View>
   );
 };
-
-export default ImageBackgroundInfo;
 
 const styles = StyleSheet.create({
   ItemBackgroundImage: {
@@ -219,6 +217,12 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_10,
     color: COLORS.primaryWhiteHex,
   },
+  PropertyTextLast: {
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_10,
+    color: COLORS.primaryWhiteHex,
+    marginTop: SPACING.space_2 + SPACING.space_4,
+  },
   RatingContainer: {
     flexDirection: 'row',
     gap: SPACING.space_10,
@@ -247,10 +251,6 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_10,
     color: COLORS.primaryWhiteHex,
   },
-  PropertyTextLast: {
-    fontFamily: FONTFAMILY.poppins_medium,
-    fontSize: FONTSIZE.size_10,
-    color: COLORS.primaryWhiteHex,
-    marginTop: SPACING.space_2 + SPACING.space_4,
-  },
 });
+
+export default ImageBackgroundInfo;

@@ -7,6 +7,7 @@ import ProfilePic from './ProfilePic';
 interface HeaderBarProps {
   title?: string;
 }
+
 const HeaderBar: React.FC<HeaderBarProps> = ({title}) => {
   return (
     <View style={styles.HeaderContainer}>
@@ -21,8 +22,6 @@ const HeaderBar: React.FC<HeaderBarProps> = ({title}) => {
   );
 };
 
-export default HeaderBar;
-
 const styles = StyleSheet.create({
   HeaderContainer: {
     padding: SPACING.space_30,
@@ -36,3 +35,5 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhiteHex,
   },
 });
+
+export default HeaderBar;

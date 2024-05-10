@@ -1,9 +1,7 @@
 import {create} from 'zustand';
 import {produce} from 'immer';
 import {persist, createJSONStorage} from 'zustand/middleware';
-import AsyncStorage, {
-  useAsyncStorage,
-} from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CoffeeData from '../data/CoffeeData';
 import BeansData from '../data/BeansData';
 
@@ -56,7 +54,7 @@ export const useStore = create(
       calculateCartPrice: () =>
         set(
           produce(state => {
-            let totalPrice = 0;
+            let totalprice = 0;
             for (let i = 0; i < state.CartList.length; i++) {
               let tempprice = 0;
               for (let j = 0; j < state.CartList[i].prices.length; j++) {
@@ -66,9 +64,9 @@ export const useStore = create(
                     state.CartList[i].prices[j].quantity;
               }
               state.CartList[i].ItemPrice = tempprice.toFixed(2).toString();
-              totalPrice = totalPrice + tempprice;
+              totalprice = totalprice + tempprice;
             }
-            state.CartPrice = totalPrice.toFixed(2).toString();
+            state.CartPrice = totalprice.toFixed(2).toString();
           }),
         ),
       addToFavoriteList: (type: string, id: string) =>
@@ -80,6 +78,8 @@ export const useStore = create(
                   if (state.CoffeeList[i].favourite == false) {
                     state.CoffeeList[i].favourite = true;
                     state.FavoritesList.unshift(state.CoffeeList[i]);
+                  } else {
+                    state.CoffeeList[i].favourite = false;
                   }
                   break;
                 }
@@ -90,6 +90,8 @@ export const useStore = create(
                   if (state.BeanList[i].favourite == false) {
                     state.BeanList[i].favourite = true;
                     state.FavoritesList.unshift(state.BeanList[i]);
+                  } else {
+                    state.BeanList[i].favourite = false;
                   }
                   break;
                 }
@@ -105,17 +107,19 @@ export const useStore = create(
                 if (state.CoffeeList[i].id == id) {
                   if (state.CoffeeList[i].favourite == true) {
                     state.CoffeeList[i].favourite = false;
-                    state.FavoritesList.unshift(state.CoffeeList[i]);
+                  } else {
+                    state.CoffeeList[i].favourite = true;
                   }
                   break;
                 }
               }
-            } else if (type == 'Bean') {
+            } else if (type == 'Beans') {
               for (let i = 0; i < state.BeanList.length; i++) {
                 if (state.BeanList[i].id == id) {
                   if (state.BeanList[i].favourite == true) {
                     state.BeanList[i].favourite = false;
-                    state.FavoritesList.unshift(state.BeanList[i]);
+                  } else {
+                    state.BeanList[i].favourite = true;
                   }
                   break;
                 }
@@ -187,7 +191,7 @@ export const useStore = create(
                   new Date().toDateString() +
                   ' ' +
                   new Date().toLocaleTimeString(),
-                Cartlist: state.CartList,
+                CartList: state.CartList,
                 CartListPrice: temp.toFixed(2).toString(),
               });
             } else {
@@ -196,7 +200,7 @@ export const useStore = create(
                   new Date().toDateString() +
                   ' ' +
                   new Date().toLocaleTimeString(),
-                Cartlist: state.CartList,
+                CartList: state.CartList,
                 CartListPrice: temp.toFixed(2).toString(),
               });
             }
